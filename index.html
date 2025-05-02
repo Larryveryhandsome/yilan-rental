@@ -30,6 +30,19 @@
             height: 100%;
             border: 0;
         }
+        .video-container {
+            width: 100%;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        .property-video {
+            width: 100%;
+            max-height: 500px;
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +79,13 @@
             </div>
 
             <div class="col-md-6">
+                <div class="video-container mb-4">
+                    <video class="property-video" controls preload="metadata">
+                        <source src="videos/白色物業詳情出租房地產樓盤 169 影片.mp4" type="video/mp4">
+                        您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+
                 <div class="row">
                     <div class="col-12 mb-4">
                         <img src="物件外觀.jpg" alt="物件外觀" class="property-image">
