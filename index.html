@@ -65,6 +65,14 @@
             overflow: hidden;
             background-color: #000;
             position: relative;
+            min-height: 300px;
+        }
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
         }
         .property-video {
             width: 100%;
@@ -72,6 +80,11 @@
             display: block;
             margin: 0 auto;
             background-color: #000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .property-video.loaded {
+            opacity: 1;
         }
         .video-poster {
             width: 100%;
@@ -176,13 +189,20 @@
                     <video 
                         class="property-video lazy-video" 
                         controls 
-                        preload="none" 
+                        preload="metadata" 
                         poster="images/video-preview.jpg"
                         data-src="videos/白色物業詳情出租房地產樓盤 169 影片.mp4"
+                        playsinline
+                        muted
                     >
                         <source type="video/mp4">
                         您的瀏覽器不支援影片播放。
                     </video>
+                    <div class="video-loading">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="visually-hidden">載入中...</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 外觀 -->
@@ -315,12 +335,27 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const video = entry.target;
+                        const container = video.parentElement;
+                        const loading = container.querySelector('.video-loading');
+                        
+                        // 顯示載入中動畫
+                        loading.style.display = 'block';
+                        
                         const source = video.querySelector('source');
                         source.src = video.dataset.src;
+                        
+                        video.addEventListener('loadeddata', () => {
+                            video.classList.add('loaded');
+                            loading.style.display = 'none';
+                        });
+                        
                         video.load();
                         observer.unobserve(video);
                     }
                 });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.1
             });
 
             lazyVideos.forEach(video => videoObserver.observe(video));
